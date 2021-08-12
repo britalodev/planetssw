@@ -1,0 +1,41 @@
+version: '3.7'
+networks:
+  producao-local:
+    driver: bridge
+services:
+  mongodb:
+    build:
+      dockerfile: mongo.dockerfile
+      context: ..
+    image: mongo:latest
+    restart: always
+    container_name: mongodb
+    networks:
+      - producao-local
+    ports:
+      - "27017:27017"
+    environment:
+      MONGO_INITDB_DATABASE: starwars
+      MONGO_INITDB_ROOT_USERNAME: italo
+      MONGO_INITDB_ROOT_PASSWORD: 123456789
+    volumes:
+      - ./data:/data/db
+      - ./conf/mongod.conf:/etc/mongod.conf
+#    command:
+#      - '-f'
+#      - '/etc/mongod.conf'
+
+
+
+  starwars:
+    build:
+      dockerfile: starwars.dockerfile
+      context: ..
+    image: openjdk:8-jdk
+    container_name: starwars
+    networks:
+      - producao-local
+    ports:
+      - "8080:8080"
+    depends_on:
+      - "mongodb"
