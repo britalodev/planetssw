@@ -1,4 +1,4 @@
-# Projeto Plasnets Star Wars API
+# Projeto Planets Star Wars API
 
 ## Objetivo:
 
